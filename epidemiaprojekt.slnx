@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="epidemiaprojekt/epidemiaprojekt.vcxproj" Id="919eab52-4a32-4b6b-98cb-9e7c74988a0b" />
+</Solution>
