@@ -11,46 +11,65 @@ double infectionRate = 0.2;
 double recoveryRate = 0.1;
 int day = 0;
 int Total = infected + susceptible + recovered;
- 
-
+int  populationHistory[101][3];
+int ninfected = infected * infectionRate;
+int nrecovered = recovered * recoveryRate;
+int dailyNewInfections[100] = {};
+int dailyRecoveries[100] = {};
+int maxsdays = 101;
 void simulateDay() {
-	int ninfected = infected * infectionRate;
-	int nrecovered = recovered * recoveryRate;
-	recoveryRate == recoveryRate <= infected;
-	infectionRate == infectionRate <= susceptible;
-	infected = floor (infected +ninfected - nrecovered);
-    susceptible = floor(susceptible -ninfected) ;
-	recovered = floor(recovered + nrecovered);
-	day += 1;
+	
+		int ninfected = infected * infectionRate;
+		int nrecovered = recovered * recoveryRate;
+		recoveryRate == recoveryRate <= infected;
+		infectionRate == infectionRate <= susceptible;
+		infected = floor(infected + ninfected - nrecovered);
+		susceptible = floor(susceptible - ninfected);
+		recovered = floor(recovered + nrecovered);
+		day += 1;
+		populationHistory[day][0] = 80 - ninfected;
+		populationHistory[day][1] = 10 + ninfected;
+		populationHistory[day][2] = 10 + nrecovered;
+		if (day >= 1) {
+			cout << "new infected: " << dailyNewInfections[day] << endl;
+			cout << "new recoveries: " << dailyRecoveries[day] << endl;
+		}
+		
+	
 }
 
 void showPopulation() {
 	
-	cout << "Day: " << day << endl;
-	cout << "Susceptible " << susceptible << endl;
-	cout << "Infected: " << infected << endl;
-	cout << "Recovered: " << recovered << endl;
-	cout << "Total: " << infected + susceptible + recovered << endl;
+		cout << "Day: " << day << endl;
+		cout << "Susceptible " << susceptible << endl;
+		cout << "Infected: " << infected << endl;
+		cout << "Recovered: " << recovered << endl;
+		cout << "Total: " << infected + susceptible + recovered << endl;
 	
+		
+		
 	
 
-	
+
+
+
 	
 }
 bool checkPopulation() {
 	if (Total == 100)
 	{
-		return true;
+		if (infected > 0 && susceptible > 0 && recovered > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
 	}
 	else {
 		return false;
 	}
-	if (infected > 0 && susceptible > 0 && recovered > 0) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	
 }
 	void changeParametr(){
 		int z;
@@ -97,45 +116,89 @@ bool checkPopulation() {
 		}
 
 	}
-
+	void simulationhistory() {
+		for (int i = 0; i <= day; i++) {
+			cout << "day: " << i << endl;
+			cout << " Population " << "Infection " << "Recovery " << "New infections " << "New Recovers " << endl;
+			for (int j = 0; j < 3; j++) {
+				cout  << populationHistory[i][j] << " ";
+				
+				
+			}if (i > 0) {
+				cout << dailyNewInfections[i] << " ";
+				cout << dailyRecoveries[i] << " ";
+			}
+			if (i == 0) {
+				cout << " - - ";
+			}
+			cout << endl;
+			 
+		}
+	}
 
 int main()
 {
+	
 	int susceptible = 80;
 	int infected = 10;
 	int recovered = 10;
 	double infectionRate = 0.2;
 	double recoveryRate = 0.1;
 	int day = 0;
+	for (int i = 0; i < 100; i++) {
+		dailyNewInfections[i] = ninfected;
+		dailyRecoveries[i] = nrecovered;
+	}
+	
+	populationHistory[day][0] = susceptible;
+	populationHistory[day][1] = infected;
+	populationHistory[day][2] = recovered;
 	showPopulation();
 	int x;
 	cout << " === Epidemic Simulator === " << endl;
 	cout << "1. Simulate next day: " << endl;
 	cout << "2. Change model parameters: " << endl;
-	cout << "3. Exit: " << endl;
-		
+	cout << "3. Show simulation history: " << endl;
+	cout << "4. Exit: " << endl;
+	
 	do {
+		
+		if (maxsdays < day) {
+			cout << " ===Day limit has been used up=== " << endl;
+			return 0;
+		}
 		cout << "Wybierz opcje z menu: " << endl;
 		cin >> x;
-
+		
+		
 		switch (x) {
 		case 1:
 			cout << " === Simulate next day === " << endl;
 			simulateDay();
 			showPopulation();
 			checkPopulation();
+			
+			day += 1;
 
 			break;
 		case 2:
 			cout << " === Change model parameters === " << endl;
 			changeParametr(); 
 			break;
+		
 		case 3:
+			cout << " === Show simulation history === " << endl;
+			simulationhistory();
+		case 4:
 			break;
+
 		default:
 			cout << " ERROR!!! Bledny numer!!! " << endl;
 		}
-	} while (x != 3);
+		if (checkPopulation() == 0) {
+			break;
+		}
+	} while (x != 4);
 
 }
 
